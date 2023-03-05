@@ -10,10 +10,10 @@ export default function handler(
 ) {
   switch (req.method) {
     case "GET":
-      res.status(200).json({ message: "This is your URL" });
+      res.status(200).json({ message: "some.url/12345" });
       break;
     case "POST":
-      res.status(201).json({ message: "URL shortened" });
+      res.status(201).json({ message: "some.url/12345" });
       break;
     default:
       res.status(400).json({ message: "Wrong method!" })

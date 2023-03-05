@@ -1,14 +1,38 @@
 import { useState } from "react";
 
 export default function URLForm() {
-  const [url, setUrl] = useState("");
+  const [urlInput, setUrlInput] = useState({url: ""});
+  const [submition, setSubmition] = useState(0);
+  const [shortUrl, setShortUrl] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUrl(e.target.value);
+    setUrlInput({url: e.target.value});
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setSubmition(1);
+
+    const options = {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(urlInput),
+      };
+
+    fetch("/api", options)
+      .then((response) => response.json())
+      .then((newData) => {
+        console.log(newData);
+        setShortUrl(newData.message);
+        setSubmition(2);
+        setUrlInput({url: ""});
+      })
+      .catch((error) => {
+        console.log(error);
+        setSubmition(3);
+      });
     console.log("submit!!");
   };
 
@@ -16,14 +40,25 @@ export default function URLForm() {
     <form className="url-form" onSubmit={handleSubmit}>
       <label htmlFor="urlInput">
         <input
-        className="url-input"
+          className="url-input"
           type="text"
           name="urlInput"
-          value={url}
+          value={urlInput.url}
           onChange={handleChange}
         />
       </label>
-      <button className="url-btn">Shorten!</button>
+      {submition === 1 ? (
+        <h2>Loading...</h2>
+      ) : submition === 2 ? (
+        <>
+          <h2>There you go:</h2>
+          <h2>{shortUrl}</h2>
+        </>
+      ) : submition === 3 ? (
+        <h2>There&apos;s been an error :(</h2>
+      ) : (
+        <button className="url-btn">Shorten!</button>
+      )}
     </form>
   );
 }
