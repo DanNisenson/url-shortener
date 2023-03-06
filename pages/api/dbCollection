@@ -1,0 +1,18 @@
+db.createCollection("urls", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["longUrl", "shortUrl"],
+      properties: {
+        longUrl: {
+          bsonType: "string",
+          description: "Original long-format URL",
+        },
+        shortUrl: {
+          bsonType: "string",
+          description: "New short-format alias URL",
+        },
+      },
+    },
+  },
+});
