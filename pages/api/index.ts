@@ -1,32 +1,26 @@
-const MongoClient = require("mongodb").MongoClient;
 import { nanoid } from "nanoid";
 import type { NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "./apiHelpers/dbConnect";
 
 type Data = {
   message: any;
 };
 
-const url = process.env.DB_URL;
-
-const client = new MongoClient(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 const insertUrl = async (longUrl: string) => {
-  const shortId = nanoid();
-  console.log("insert function");
+  const shortId = nanoid(6);
   try {
-    await client.connect();
-    const urlsCollection = client.db("url-shortener").collection("urls");
+    const { urlsCollection, close } = await dbConnect();
     const newEntry = {
       longUrl: longUrl,
       shortUrl: shortId,
     };
     const insertResponse = await urlsCollection.insertOne(newEntry);
-    console.log("insertresponse", insertResponse);
-    client.close();
-    return shortId;
+    close();
+    if (insertResponse.acknowledged) {
+      return shortId;
+    } else {
+      return "an error in the db has ocurred"
+    }
   } catch (error) {
     console.log("insert error", error);
   }

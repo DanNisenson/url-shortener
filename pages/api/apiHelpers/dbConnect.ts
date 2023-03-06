@@ -7,11 +7,13 @@ const client = new MongoClient(url, {
   useUnifiedTopology: true,
 });
 
-export default async function connect() {
-  await client.connect();
+export default async function dbConnect() {
+  try {
+    await client.connect();
+  } catch (error) {
+    console.log("! db connection function",error)
+  }
   const urlsCollection = client.db("url-shortener").collection("urls");
-  const close = client.close();
+  const close = client.close;
   return { urlsCollection, close };
 }
-
-console.log("rats");
