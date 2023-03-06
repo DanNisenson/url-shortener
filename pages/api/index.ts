@@ -10,12 +10,16 @@ export default function handler(
 ) {
   switch (req.method) {
     case "GET":
-      res.status(200).json({ message: "some.url/12345" });
+      res.redirect(
+        301,
+        "https://refactoring.com/"
+      );
       break;
     case "POST":
-      res.status(201).json({ message: "some.url/12345" });
+      // new entry in db
+      res.status(201).json({ message: "cool beans" });
       break;
     default:
-      res.status(400).json({ message: "Wrong method!" })
+      res.status(400).json({ message: "Wrong method!" });
   }
 }
