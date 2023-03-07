@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "./apiHelpers/dbConnect";
+import dbConnect from "@/server/apiHelpers/dbConnect";
 
 type Data = {
   message: any;
@@ -35,7 +35,6 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const dbRes = await insertUrl(req.body.url);
-      console.log("index POST contr", dbRes);
       res.status(201).json({ message: `http://localhost:3000/${dbRes}` });
     } catch (error) {
       console.log("error", error);
