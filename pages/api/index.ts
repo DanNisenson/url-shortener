@@ -36,7 +36,7 @@ export default async function handler(
     try {
       const dbRes = await insertUrl(req.body.url);
       console.log("index POST contr", dbRes);
-      res.status(201).json({ message: `http://localhost:3000/api/${dbRes}` });
+      res.status(201).json({ message: `http://localhost:3000/${dbRes}` });
     } catch (error) {
       console.log("error", error);
     }
