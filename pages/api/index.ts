@@ -14,8 +14,10 @@ const insertUrl = async (longUrl: string) => {
       longUrl: longUrl,
       shortUrl: shortId,
     };
+
     const insertResponse = await urlsCollection.insertOne(newEntry);
     close();
+
     if (insertResponse.acknowledged) {
       return shortId;
     } else {
@@ -33,7 +35,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const dbRes = await insertUrl(req.body.url);
-      console.log("contr", dbRes);
+      console.log("index POST contr", dbRes);
       res.status(201).json({ message: `http://localhost:3000/api/${dbRes}` });
     } catch (error) {
       console.log("error", error);
