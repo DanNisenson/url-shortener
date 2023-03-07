@@ -21,7 +21,7 @@ export default function URLForm() {
       body: JSON.stringify(urlInput),
       };
 
-    fetch("/api", options)
+    fetch("/api/url", options)
       .then((response) => response.json())
       .then((newData) => {
         console.log(newData);

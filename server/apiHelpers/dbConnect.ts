@@ -14,6 +14,6 @@ export default async function dbConnect() {
     console.log("! db connection function",error)
   }
   const urlsCollection = client.db("url-shortener").collection("urls");
-  const close = client.close;
+  const close = client.close.bind(client)
   return { urlsCollection, close };
 }
