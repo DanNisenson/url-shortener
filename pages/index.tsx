@@ -1,6 +1,6 @@
-import Head from "next/head";
-import HeroTitle from "@/components/HeroTitle";
-import URLForm from "@/components/URLForm";
+import Head from 'next/head'
+import HeroTitle from '@/components/HeroTitle'
+import URLForm from '@/components/URLForm'
 
 export default function Home() {
   return (
@@ -17,5 +17,5 @@ export default function Home() {
         <URLForm />
       </main>
     </>
-  );
+  )
 }

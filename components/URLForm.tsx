@@ -1,40 +1,40 @@
-import { useState } from "react";
+import { useState } from 'react'
 
 export default function URLForm() {
-  const [urlInput, setUrlInput] = useState({url: ""});
-  const [submition, setSubmition] = useState(0);
-  const [shortUrl, setShortUrl] = useState("");
+  const [urlInput, setUrlInput] = useState({ url: '' })
+  const [submition, setSubmition] = useState(0)
+  const [shortUrl, setShortUrl] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUrlInput({url: e.target.value});
-  };
+    setUrlInput({ url: e.target.value })
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmition(1);
+    e.preventDefault()
+    setSubmition(1)
 
     const options = {
       method: 'POST',
       headers: {
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(urlInput),
-      };
+    }
 
-    fetch("/api/url", options)
+    fetch('/api/url', options)
       .then((response) => response.json())
       .then((newData) => {
-        console.log(newData);
-        setShortUrl(newData.message);
-        setSubmition(2);
-        setUrlInput({url: ""});
+        console.log(newData)
+        setShortUrl(newData.message)
+        setSubmition(2)
+        setUrlInput({ url: '' })
       })
       .catch((error) => {
-        console.log(error);
-        setSubmition(3);
-      });
-    console.log("submit!!");
-  };
+        console.log(error)
+        setSubmition(3)
+      })
+    console.log('submit!!')
+  }
 
   return (
     <form className="url-form" onSubmit={handleSubmit}>
@@ -60,5 +60,5 @@ export default function URLForm() {
         <button className="url-btn">Shorten!</button>
       )}
     </form>
-  );
+  )
 }
