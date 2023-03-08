@@ -10,6 +10,7 @@ db.runCommand({
         userId: {
           bsonType: 'string',
           description: 'User owner of link',
+          minLength: 0,
         },
         longUrl: {
           bsonType: 'string',

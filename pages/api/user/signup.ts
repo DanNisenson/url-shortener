@@ -5,14 +5,8 @@
 // - query: insertOne({ email, encryptedPassword })                  \ error handling
 // - tokenize userId
 // - res.({ token })
-
-// how to proper format error. ex: validateInfo error responses
-// what should I return in validateInfo if it's all good
-// when to throw new Error
-// should there be error handling in try-catch @line20
-
 import type { NextApiRequest, NextApiResponse } from 'next'
-import type { ErrorResponse, Response } from '@/server.types'
+import type { ErrorResponse, AuthResponse } from '@/server.types'
 import { hashPassword } from '@/server/encryptionHelpers'
 import { findUserByEmail, insertNewUser } from '@/server/userQueries'
 import validateAuthInfo from '@/server/validation/validateAuthInfo'
@@ -20,8 +14,10 @@ import jwt from 'jsonwebtoken'
 
 export default async function signUp(
   req: NextApiRequest,
-  res: NextApiResponse<Response | ErrorResponse>,
+  res: NextApiResponse<AuthResponse | ErrorResponse>,
 ) {
+  if (req.method !== 'POST') return res.status(400).json({ error: 'Needs to be a POST request'})
+
   const { email, password } = req.body
 
   const isInfoValid = validateAuthInfo(email, password)
@@ -29,7 +25,7 @@ export default async function signUp(
 
   const user = await findUserByEmail(email)
   if (user) return res.status(400).json({ error: 'Email already in use' })
- 
+
   const hashedPassword = await hashPassword(password)
   if (hashedPassword === 'error') {
     console.log(hashedPassword)

@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
 export default function URLForm() {
-  const [urlInput, setUrlInput] = useState({ url: '' })
+  const [urlInput, setUrlInput] = useState({ longUrl: '' })
   const [submition, setSubmition] = useState(0)
   const [shortUrl, setShortUrl] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUrlInput({ url: e.target.value })
+    setUrlInput({ longUrl: e.target.value })
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,7 +26,7 @@ export default function URLForm() {
       .then((newData) => {
         setShortUrl(newData.message)
         setSubmition(2)
-        setUrlInput({ url: '' })
+        setUrlInput({ longUrl: '' })
       })
       .catch((error) => {
         console.log(error)
@@ -41,7 +41,7 @@ export default function URLForm() {
           className="url-input"
           type="text"
           name="urlInput"
-          value={urlInput.url}
+          value={urlInput.longUrl}
           onChange={handleChange}
         />
       </label>

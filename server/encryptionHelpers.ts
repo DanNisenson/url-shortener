@@ -1,4 +1,5 @@
 import * as argon2 from 'argon2'
+import jwt from 'jsonwebtoken';
 
 export async function hashPassword(password: string) {
   try {
@@ -19,7 +20,18 @@ export const verifyPassword = async (hashedPassword: string, password: string) =
       return false
     }
   } catch (error) {
-    console.log("verifyPassword", error)
-    return "error"
+    console.log('verifyPassword', error)
+    return 'error'
+  }
+}
+
+export const decryptToken = (token: string) => {
+  const secret = process.env.TOKEN_SECRET as string
+
+  try {
+    const decrypted = jwt.verify(token, secret) as string
+    return decrypted
+  } catch (error) {
+    console.error("decryptToken", error)
   }
 }
