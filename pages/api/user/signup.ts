@@ -5,53 +5,84 @@
 // - query: insertOne({ email, encryptedPassword })                  \ error handling
 // - tokenize userId
 // - res.({ token })
-import type { NextApiRequest, NextApiResponse } from 'next'
+
+// how to proper format error. ex: validateInfo error responses
+// what should I return in validateInfo if it's all good
+// when to throw new Error
+// should there be error handling in try-catch @line20
+
+import dbConnect from '@/server/db/dbConnect'
+import validateAuthInfo from '@/server/validation/validateAuthInfo'
 import * as argon2 from 'argon2'
+import jwt from 'jsonwebtoken'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import type { Response, ErrorResponse } from '@/server.types'
 
-type Response = {}
-
-async function hashing(password: string) {
+async function hashPassword(password: string) {
   try {
     const hash = await argon2.hash(password)
-    if (hash) return hash
-  } catch (err) {
-    console.log(err)
-    return err
+    // should there be error handling here?
+    return hash
+  } catch (error) {
+    console.log(error)
+    return 'error'
   }
 }
 
-const findByEmail = async (email: string) => {
-  
+const findUserByEmail = async (email: string) => {
+  try {
+    const { usersCollection, close } = await dbConnect()
+    const user = await usersCollection.findOne({ email: email })
+    close()
+    return user
+  } catch (error) {
+    console.log('findUserByEmail error', error)
+  }
 }
 
-/**
- * Validate email and password
- * @param email string
- * @param password string
- * @returns 1 for valid info. { error: string} for invalid info
- */
-const validateInfo = (email = null, password = null) => {
-  if (!email) return { error: 'Must enter email' }
-  if (!password) return { error: 'Must enter password' }
-
-  const regexemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-  const regexpassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
-
-  if (!regexemail.test(email)) return { error: 'invalid email format' }
-  if (!regexpassword.test(password)) return { error: 'invalid password format' }
-
-  return 1
+const insertNewUser = async (email: string, hashedPassword: string) => {
+  const newUser = {
+    email: email,
+    password: hashedPassword,
+  }
+  try {
+    const { usersCollection, close } = await dbConnect()
+    const dbRes = await usersCollection.insertOne(newUser)
+    close()
+    return dbRes
+  } catch (error) {
+    console.log('insertNewUser error', error)
+  }
 }
 
-export default async function signUp(req: NextApiRequest, res: NextApiResponse<Response>) {
+export default async function signUp(
+  req: NextApiRequest,
+  res: NextApiResponse<Response | ErrorResponse>,
+) {
   const { email, password } = req.body
 
-  const isInfoValid = validateInfo(email, password)
+  const isInfoValid = validateAuthInfo(email, password)
   if (isInfoValid !== 1) return res.status(400).json(isInfoValid)
 
+  const user = await findUserByEmail(email)
+  if (user?.email) return res.status(400).json({ error: 'Email already in use' })
+ 
+  const hashedPassword = await hashPassword(password)
+  if (hashedPassword === 'error') {
+    console.log(hashedPassword)
+    return
+  }
 
+  const { acknowledged, insertedId } = await insertNewUser(email, hashedPassword)
+  if (!acknowledged) return res.status(400).json({ error: 'Error inserting new user' })
 
-  // const hash = await hashing(password)
-  // console.log('controller', hash)
-  return res.status(200).json({ hash: isInfoValid })
+  const userUuid = insertedId.toString()
+  const secret = process.env.TOKEN_SECRET as string
+  const token = jwt.sign(userUuid, secret)
+
+  const response = {
+    token: token,
+  }
+
+  return res.status(200).json(response)
 }

@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import type { NextApiRequest, NextApiResponse } from 'next'
-import dbConnect from '@/server/apiHelpers/dbConnect'
+import dbConnect from '@/server/db/dbConnect'
 
 type Data = {
   message: any
