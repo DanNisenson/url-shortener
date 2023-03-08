@@ -24,7 +24,6 @@ export default function URLForm() {
     fetch('/api/url', options)
       .then((response) => response.json())
       .then((newData) => {
-        console.log(newData)
         setShortUrl(newData.message)
         setSubmition(2)
         setUrlInput({ url: '' })
@@ -33,7 +32,6 @@ export default function URLForm() {
         console.log(error)
         setSubmition(3)
       })
-    console.log('submit!!')
   }
 
   return (

@@ -6,11 +6,12 @@ type Data = {
   message: any
 }
 
-const insertUrl = async (longUrl: string) => {
+const insertUrl = async (longUrl: string, userId = "") => {
   const shortId = nanoid(6)
   try {
     const { urlsCollection, close } = await dbConnect()
     const newEntry = {
+      userId: userId,
       longUrl: longUrl,
       shortUrl: shortId,
     }
