@@ -1,60 +1,30 @@
-const schema = {
-  validator: {
-    $jsonSchema: {
-      bsonType: 'object',
-      required: ['longUrl', 'shortUrl'],
-      properties: {
-        userId: {
-          bsonType: 'string',
-          description: 'User owner of link',
-        },
-        longUrl: {
-          bsonType: 'string',
-          description: 'Original long-format URL',
-        },
-        shortUrl: {
-          bsonType: 'string',
-          description: 'New short-format alias URL',
-        },
+/* SCHEMA = {
+  $jsonSchema: {
+    bsonType: 'object',
+    required: ['longUrl', 'shortUrl'],
+    properties: {
+      userId: {
+        bsonType: 'string',
+        description: 'User owner of link',
+      },
+      longUrl: {
+        bsonType: 'string',
+        description: 'Original long-format URL',
+      },
+      shortUrl: {
+        bsonType: 'string',
+        description: 'New short-format alias URL',
       },
     },
   },
-}
+} */
 
-// find documents that dont fit the schema and add field 
+// find documents that dont fit the schema and add field
 db.urls.updateMany(
   {
-    $nor: [schema]
+    $nor: [schema],
   },
   {
-    $set: {userId: ""}
-  }
-)
-
-db.urls.updateMany(
-  {
-    $nor: [{
-        $jsonSchema: {
-          bsonType: 'object',
-          required: ['userId', 'longUrl', 'shortUrl'],
-          properties: {
-            userId: {
-              bsonType: 'string',
-              description: 'User owner of link',
-            },
-            longUrl: {
-              bsonType: 'string',
-              description: 'Original long-format URL',
-            },
-            shortUrl: {
-              bsonType: 'string',
-              description: 'New short-format alias URL',
-            },
-          },
-        },
-    }]
+    $set: { newField: '' },
   },
-  {
-    $set: {userId: ""}
-  }
 )
