@@ -17,7 +17,7 @@ import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { Response, ErrorResponse } from '@/server.types'
-import { findUserByEmail } from '@/server/userQueries'
+import { findUserByEmail, insertNewUser } from '@/server/userQueries'
 
 async function hashPassword(password: string) {
   try {
@@ -30,20 +30,20 @@ async function hashPassword(password: string) {
   }
 }
 
-const insertNewUser = async (email: string, hashedPassword: string) => {
-  const newUser = {
-    email: email,
-    password: hashedPassword,
-  }
-  try {
-    const { usersCollection, close } = await dbConnect()
-    const dbRes = await usersCollection.insertOne(newUser)
-    close()
-    return dbRes
-  } catch (error) {
-    console.log('insertNewUser error', error)
-  }
-}
+// const insertNewUser = async (email: string, hashedPassword: string) => {
+//   const newUser = {
+//     email: email,
+//     password: hashedPassword,
+//   }
+//   try {
+//     const { usersCollection, close } = await dbConnect()
+//     const dbRes = await usersCollection.insertOne(newUser)
+//     close()
+//     return dbRes
+//   } catch (error) {
+//     console.log('insertNewUser error', error)
+//   }
+// }
 
 export default async function signUp(
   req: NextApiRequest,
