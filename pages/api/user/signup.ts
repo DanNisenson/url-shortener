@@ -17,6 +17,7 @@ import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { Response, ErrorResponse } from '@/server.types'
+import { findUserByEmail } from '@/server/userQueries'
 
 async function hashPassword(password: string) {
   try {
@@ -26,17 +27,6 @@ async function hashPassword(password: string) {
   } catch (error) {
     console.log(error)
     return 'error'
-  }
-}
-
-const findUserByEmail = async (email: string) => {
-  try {
-    const { usersCollection, close } = await dbConnect()
-    const user = await usersCollection.findOne({ email: email })
-    close()
-    return user
-  } catch (error) {
-    console.log('findUserByEmail error', error)
   }
 }
 
