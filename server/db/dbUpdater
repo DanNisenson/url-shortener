@@ -1,0 +1,30 @@
+/* SCHEMA = {
+  $jsonSchema: {
+    bsonType: 'object',
+    required: ['longUrl', 'shortUrl'],
+    properties: {
+      userId: {
+        bsonType: 'string',
+        description: 'User owner of link',
+      },
+      longUrl: {
+        bsonType: 'string',
+        description: 'Original long-format URL',
+      },
+      shortUrl: {
+        bsonType: 'string',
+        description: 'New short-format alias URL',
+      },
+    },
+  },
+} */
+
+// find documents that dont fit the schema and add field
+db.urls.updateMany(
+  {
+    $nor: [schema],
+  },
+  {
+    $set: { newField: '' },
+  },
+)
