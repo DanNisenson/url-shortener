@@ -1,4 +1,4 @@
-import dbConnect from "./db/dbConnect"
+import dbConnect from './db/dbConnect'
 
 export const findUserByEmail = async (email: string) => {
   try {
@@ -23,5 +23,17 @@ export const insertNewUser = async (email: string, hashedPassword: string) => {
     return dbRes
   } catch (error) {
     console.log('insertNewUser error', error)
+  }
+}
+
+export const findUserUrls = async (userId: string) => {
+  try {
+    const { urlsCollection, close } = await dbConnect()
+    const urls = await urlsCollection.find({ userId: userId }).toArray();
+    close()
+    return urls
+  } catch (error) {
+    console.log('findUserUrls error', error)
+    return
   }
 }

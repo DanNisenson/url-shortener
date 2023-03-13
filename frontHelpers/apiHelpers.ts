@@ -17,6 +17,18 @@ export const getLongUrl = async <T>(slug: T) => {
   return message
 }
 
-export const getUserUrls = () => {
+export const getUserUrls = async () => {
+  const url = process.env.BASE_URL
+  const token = localStorage.getItem('token') as string
+  const options = {
+    method: 'GET',
+    headers: {
+      'Authorization': token,
+    },
+  }
 
+  const apiRes = await fetch(`${url}/api/user/urls`, options)
+  const { message } = await apiRes.json()
+  // console.log(message)
+  return message
 }
