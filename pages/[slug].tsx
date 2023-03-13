@@ -8,7 +8,7 @@ type Props = {
   }
 }
 
-export default function Redirection({ props }: Props) {
+export default function Redirection() {
   return (
     <Head>
       <title>URL shortener</title>

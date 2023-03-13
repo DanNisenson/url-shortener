@@ -1,7 +1,7 @@
-import { getPostReqOptions } from '@/frontHelpers/apiHelpers'
-import { useState } from 'react'
 import { setLocalStorage } from '@/frontHelpers/localStorage'
-import axios, { AxiosError } from 'axios';
+import axios from 'axios'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 type LoginInfo = {
   email: string
@@ -10,23 +10,25 @@ type LoginInfo = {
 
 /**
  *
- * @param loginInfo { email, password}
+ * @param loginInfo { email, password }
  * @returns requestState: string, handleLogin: fetch req
  */
 const useLogin = () => {
+  const router = useRouter()
   const [requestState, setRequestState] = useState('')
   const [authError, setAuthError] = useState('')
 
   const postRequest = async (loginInfo: LoginInfo) => {
     const baseUrl = process.env.BASE_URL
     const res = await axios.post(`${baseUrl}/api/user/login`, loginInfo)
-      return res.data
+    return res.data
   }
 
   const handleSuccess = async (token: string) => {
+    console.log('success', token)
     setLocalStorage('token', token)
     setRequestState('success')
-    // redirect
+    router.push('/dashboard')
   }
 
   const handleError = (error) => {
@@ -38,7 +40,7 @@ const useLogin = () => {
   const handleLogin = async (loginInfo: LoginInfo) => {
     setRequestState('loading')
     try {
-      const token = await postRequest(loginInfo)
+      const { token } = await postRequest(loginInfo)
       handleSuccess(token)
     } catch (error) {
       handleError(error)
