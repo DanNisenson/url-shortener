@@ -1,6 +1,7 @@
+import { getPostReqOptions } from '@/frontHelpers/apiHelpers'
 import { useState } from 'react'
 
-export default function URLForm() {
+const URLForm = () => {
   const [urlInput, setUrlInput] = useState({ longUrl: '' })
   const [submition, setSubmition] = useState(0)
   const [shortUrl, setShortUrl] = useState('')
@@ -13,13 +14,7 @@ export default function URLForm() {
     e.preventDefault()
     setSubmition(1)
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(urlInput),
-    }
+    const options = getPostReqOptions(urlInput)
 
     fetch('/api/url', options)
       .then((response) => response.json())
@@ -60,3 +55,5 @@ export default function URLForm() {
     </form>
   )
 }
+
+export default URLForm

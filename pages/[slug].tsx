@@ -22,8 +22,10 @@ export default function Redirection({ props }: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query
   const url = process.env.BASE_URL
+
   const apiRes = await fetch(`${url}/api/url/${slug}`)
   const { message } = await apiRes.json()
+  
   if (message) {
     return {
       redirect: {
