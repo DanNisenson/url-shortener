@@ -7,9 +7,11 @@ const defaultLoginFormData = {
   password: '',
 }
 
-const LoginModal = () => {
+const LoginModal = ({ log }) => {
   const { requestState, authError, handleLogin } = useLogin()
   const { formData, handleInput } = useHandleForm(defaultLoginFormData)
+
+  if (requestState === 'success') log()
 
   return (
     <div className="hero-modal__form">
@@ -34,7 +36,7 @@ const LoginModal = () => {
         Log In
       </button>
 
-      {requestState && (
+      {requestState && requestState !== 'success' && (
         <AuthMessage requestState={requestState} authError={authError} />
       )}
     </div>

@@ -25,10 +25,8 @@ const useLogin = () => {
   }
 
   const handleSuccess = async (token: string) => {
-    console.log('success', token)
     setLocalStorage('token', token)
     setRequestState('success')
-    router.push('/dashboard')
   }
 
   const handleError = (error) => {
