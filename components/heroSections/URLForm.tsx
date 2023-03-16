@@ -14,7 +14,10 @@ const URLForm = () => {
     e.preventDefault()
     setSubmition(1)
 
-    const options = getPostReqOptions(urlInput)
+    let postObj = urlInput
+    if (urlInput.longUrl.substring(0, 5) !== 'https') postObj.longUrl = 'https://' + postObj.longUrl
+
+    const options = getPostReqOptions(postObj)
 
     fetch('/api/url', options)
       .then((response) => response.json())

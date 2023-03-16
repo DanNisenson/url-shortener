@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query
 
   const message = await getLongUrl(slug)
-  
+
   if (message) {
     return {
       redirect: {
