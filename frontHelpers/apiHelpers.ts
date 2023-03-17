@@ -28,7 +28,6 @@ export const getUserUrls = async () => {
   }
 
   const apiRes = await fetch(`${url}/api/user/urls`, options)
-  const { message } = await apiRes.json()
-  // console.log(message)
-  return message
+  const usrUrls = await apiRes.json()
+  return usrUrls
 }

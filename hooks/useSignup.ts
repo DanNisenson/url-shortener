@@ -1,29 +1,28 @@
 import { useState } from 'react'
 import { setLocalStorage } from '@/frontHelpers/localStorage'
-import axios from 'axios';
-import { useRouter } from 'next/router';
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 type SignupInfo = {
   email: string
   password: string
 }
 
-
-const useSignup = () => {
+const useSignup = (setLoggedView) => {
   const router = useRouter()
   const [requestState, setRequestState] = useState('')
   const [authError, setAuthError] = useState('')
-  
+
   const postRequest = async (signupInfo: SignupInfo) => {
     const baseUrl = process.env.BASE_URL
     const res = await axios.post(`${baseUrl}/api/user/signup`, signupInfo)
     return res.data
   }
-  
+
   const handleSuccess = async (token: string) => {
     setLocalStorage('token', token)
     setRequestState('success')
-    router.push('/dashboard')
+    setLoggedView()
   }
 
   const handleError = (error) => {
@@ -35,7 +34,8 @@ const useSignup = () => {
   const handleSignup = async (signupInfo: SignupInfo) => {
     setRequestState('loading')
     try {
-      const token = await postRequest(signupInfo)
+      const { token } = await postRequest(signupInfo)
+
       handleSuccess(token)
     } catch (error) {
       handleError(error)

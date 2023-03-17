@@ -8,8 +8,12 @@ const defaultLoginFormData = {
   password: '',
 }
 
-const SignupModal = () => {
-  const { requestState, authError, handleSignup } = useSignup()
+type SignupModalProps = {
+  setLoggedView: (logState: number) => void
+}
+
+const SignupModal = ({setLoggedView}: SignupModalProps) => {
+  const { requestState, authError, handleSignup } = useSignup(setLoggedView)
   const { formData, handleInput } = useHandleForm(defaultLoginFormData)
 
   return (

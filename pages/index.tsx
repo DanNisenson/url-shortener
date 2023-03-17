@@ -9,9 +9,9 @@ import Dashboard from '@/components/Dashboard'
 export default function Home() {
   const [modal, setModal] = useState<number>(0)
   const [isLogged, setIsLogged] = useState<boolean>(false)
-  const log = () => {
-    setIsLogged(true)
+  const setLoggedView = () => {
     setModal(0)
+    setIsLogged(true)
   }
 
   return (
@@ -27,7 +27,7 @@ export default function Home() {
         <HeroTitle />
         <URLForm />
         {isLogged ? <Dashboard /> : <HeroAuth setModal={setModal}  />}
-        {modal ? <HeroModal modal={modal} setModal={setModal} log={log} /> : null}
+        {modal ? <HeroModal modal={modal} setModal={setModal} setLoggedView={setLoggedView} /> : null}
       </main>
     </>
   )

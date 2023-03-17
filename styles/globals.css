@@ -134,3 +134,10 @@ input:focus {
   margin: 1rem;
   padding: .5rem 1rem;
 }
+
+.dashboard__link {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  gap: .5rem;
+}
