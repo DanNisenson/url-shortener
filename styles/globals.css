@@ -1,7 +1,9 @@
 :root {
- --bg-light: #f8f5f2;
- --text-primary: #1e000a;
- --secondary: #b60040;
+  --bg-light: #f8f5f2;
+  --text-primary: #1e000a;
+  --secondary: #b60040;
+  --radius: 1.5rem;
+  --transparent: #ffffff00;
 }
 * {
   box-sizing: border-box;
@@ -26,6 +28,26 @@ main {
   padding: 4rem 0 0 0;
 }
 
+button {
+  background-color: var(--transparent);
+  border: 1px solid var(--text-primary);
+  border-radius: var(--radius);
+}
+
+input {
+  border-radius: var(--radius);
+  border: none;
+  outline: 1px solid var(--text-primary);
+  background-color: var(--transparent);
+  text-align: center;
+  transition: outlinex 0.15s ease-in;
+}
+
+input:focus {
+  outline: 2px solid var(--secondary);
+  border: none;
+}
+
 .hero-title {
   color: var(--text-primary);
   font-size: 3rem;
@@ -40,28 +62,82 @@ main {
 }
 
 .url-input {
-  padding: .5rem;
-  border-radius: 1.5rem;
+  padding: 0.5rem;
   width: 50vw;
-  border: none;
-  outline: 1px solid var(--text-primary);
-  text-align: center;
   font-size: 2rem;
-  background-color: transparent;
-  transition: outlinex .15s ease-in;
-}
-
-.url-input:focus {
-  outline: 2px solid var(--secondary);
-  border: none;
+  transition: outlinex 0.15s ease-in;
 }
 
 .url-btn {
   font-size: 2rem;
   width: fit-content;
-  padding: .5rem;
+  padding: 0.5rem;
   border-radius: 1.5rem;
   border: 1px solid var(--text-primary);
   background-color: transparent;
-  color: var(--text-primary)
+  color: var(--text-primary);
+}
+
+.hero-btns {
+  margin: 1rem 0.5rem;
+  width: 8rem;
+  padding: 1rem;
+}
+
+.hero-modal__background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: #00000088;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 90;
+}
+
+.hero-modal__click-outside {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 91;
+}
+
+.hero-modal__card {
+  background-color: var(--bg-light);
+  height: 500px;
+  width: 300px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+  z-index: 92;
+}
+
+.hero-modal__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-modal__input {
+  font-size: 1.5rem;
+  padding: 0.2rem;
+}
+
+.hero-modal__button {
+  width: fit-content;
+  margin: 1rem;
+  padding: .5rem 1rem;
+}
+
+.dashboard__link {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  gap: .5rem;
 }

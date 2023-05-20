@@ -1,35 +1,37 @@
+import { getPostReqOptions } from '@/frontHelpers/apiHelpers'
 import { useState } from 'react'
 
-export default function URLForm() {
-  const [urlInput, setUrlInput] = useState({ longUrl: '' })
+const URLForm = () => {
+  const [urlInput, setUrlInput] = useState({ longUrl: '', token: '' })
   const [submition, setSubmition] = useState(0)
   const [shortUrl, setShortUrl] = useState('')
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUrlInput({ longUrl: e.target.value })
+    setUrlInput({ longUrl: e.target.value, token: '' })
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setSubmition(1)
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(urlInput),
-    }
+    let postObj = urlInput
+    if (urlInput.longUrl.substring(0, 5) !== 'https')
+      postObj.longUrl = 'https://' + postObj.longUrl
+
+    const token = localStorage.getItem('token')
+    if (token) postObj = { ...postObj, token: token }
+
+    const options = getPostReqOptions(postObj)
 
     fetch('/api/url', options)
       .then((response) => response.json())
       .then((newData) => {
         setShortUrl(newData.message)
         setSubmition(2)
-        setUrlInput({ longUrl: '' })
+        setUrlInput({ longUrl: '', token: '' })
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
         setSubmition(3)
       })
   }
@@ -54,9 +56,10 @@ export default function URLForm() {
         </>
       ) : submition === 3 ? (
         <h2>There&apos;s been an error :(</h2>
-      ) : (
-        <button className="url-btn">Shorten!</button>
-      )}
+      ) : null}
+      <button className="url-btn">Shorten!</button>
     </form>
   )
 }
+
+export default URLForm

@@ -1,8 +1,19 @@
 import Head from 'next/head'
-import HeroTitle from '@/components/HeroTitle'
-import URLForm from '@/components/URLForm'
+import HeroTitle from '@/components/heroSections/HeroTitle'
+import URLForm from '@/components/heroSections/URLForm'
+import HeroAuth from '@/components/heroSections/HeroAuth'
+import HeroModal from '@/components/authModal/HeroModal'
+import { useState } from 'react'
+import Dashboard from '@/components/Dashboard'
 
 export default function Home() {
+  const [modal, setModal] = useState<number>(0)
+  const [isLogged, setIsLogged] = useState<boolean>(false)
+  const setLoggedView = () => {
+    setModal(0)
+    setIsLogged(true)
+  }
+
   return (
     <>
       <Head>
@@ -15,6 +26,8 @@ export default function Home() {
       <main>
         <HeroTitle />
         <URLForm />
+        {isLogged ? <Dashboard /> : <HeroAuth setModal={setModal}  />}
+        {modal ? <HeroModal modal={modal} setModal={setModal} setLoggedView={setLoggedView} /> : null}
       </main>
     </>
   )

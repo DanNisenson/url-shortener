@@ -7,6 +7,31 @@ import { decryptToken } from '@/server/encryptionHelpers'
 
 type UserId = string | undefined
 
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<MessageResponse | ErrorResponse>,
+) {
+  if (req.method !== 'POST')
+    return res.status(400).json({ error: 'Needs to be a POST request' })
+
+  const longUrl = req.body.longUrl
+  const token = req.body.token
+  let userId: UserId = ''
+
+  if (token) userId = decryptToken(token)
+  if (token && !userId) return res.status(400).json({ error: 'invalid token' })
+
+  try {
+    const dbRes = await insertUrl(longUrl, userId)
+    return res.status(201).json({ message: `http://localhost:3000/${dbRes}` })
+  } catch (error) {
+    // console.log('error', error)
+    return res
+      .status(500)
+      .json({ error: 'There has been an error inserting the link' })
+  }
+}
+
 const insertUrl = async (longUrl: string, userId: UserId) => {
   const shortId = nanoid(6)
 
@@ -27,28 +52,6 @@ const insertUrl = async (longUrl: string, userId: UserId) => {
       return 'an error in the db has ocurred'
     }
   } catch (error) {
-    console.log('insert error', error)
-  }
-}
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<MessageResponse | ErrorResponse>,
-) {
-  if (req.method !== 'POST') return res.status(400).json({ error: 'Needs to be a POST request' })
-
-  const longUrl = req.body.longUrl
-  const token = req.body.token
-  let userId: UserId = ''
-
-  if (token) userId = decryptToken(token)
-  if (token && !userId) return res.status(400).json({ error: 'invalid token'})
-
-  try {
-    const dbRes = await insertUrl(longUrl, userId)
-    return res.status(201).json({ message: `http://localhost:3000/${dbRes}` })
-  } catch (error) {
-    console.log('error', error)
-    return res.status(500).json({ error: 'There has been an error inserting the link'})
+    // console.log('insert error', error)
   }
 }

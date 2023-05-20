@@ -1,4 +1,4 @@
-export default function HeroTitle() {
+const HeroTitle = () => {
   return (
     <>
       <h1 className="hero-title">Shorten your URL</h1>
@@ -6,3 +6,5 @@ export default function HeroTitle() {
     </>
   );
 }
+
+export default HeroTitle

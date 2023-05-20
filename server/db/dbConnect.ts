@@ -11,7 +11,7 @@ export default async function dbConnect() {
   try {
     await client.connect()
   } catch (error) {
-    console.log('! db connection function', error)
+    // console.log('! db connection function', error)
   }
   const urlsCollection = client.db('url-shortener').collection('urls')
   const usersCollection = client.db('url-shortener').collection('users')
