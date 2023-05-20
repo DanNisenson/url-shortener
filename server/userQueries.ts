@@ -7,7 +7,7 @@ export const findUserByEmail = async (email: string) => {
     close()
     return user
   } catch (error) {
-    console.log('findUserByEmail error', error)
+    // console.log('findUserByEmail error', error)
   }
 }
 
@@ -22,7 +22,7 @@ export const insertNewUser = async (email: string, hashedPassword: string) => {
     close()
     return dbRes
   } catch (error) {
-    console.log('insertNewUser error', error)
+    // console.log('insertNewUser error', error)
   }
 }
 
@@ -33,7 +33,7 @@ export const findUserUrls = async (userId: string) => {
     close()
     return urls
   } catch (error) {
-    console.log('findUserUrls error', error)
+    // console.log('findUserUrls error', error)
     return
   }
 }

@@ -23,10 +23,9 @@ const getUrl = async (shortId: string) => {
   try {
     const { urlsCollection, close } = await dbConnect()
     const res = await urlsCollection.findOne({ shortUrl: shortId })
-    console.log(res)
     close()
     return res.longUrl
   } catch (error) {
-    console.log('getUrl error', error)
+    // console.log('getUrl error', error)
   }
 }

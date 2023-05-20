@@ -31,7 +31,7 @@ const URLForm = () => {
         setUrlInput({ longUrl: '', token: '' })
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
         setSubmition(3)
       })
   }

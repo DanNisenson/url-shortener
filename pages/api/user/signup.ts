@@ -28,7 +28,7 @@ export default async function signUp(
 
   const hashedPassword = await hashPassword(password)
   if (hashedPassword === 'error') {
-    console.log(hashedPassword)
+    // console.log(hashedPassword)
     return
   }
 

@@ -23,10 +23,9 @@ export default async function handler(
 
   try {
     const dbRes = await insertUrl(longUrl, userId)
-    console.log('controller',dbRes)
     return res.status(201).json({ message: `http://localhost:3000/${dbRes}` })
   } catch (error) {
-    console.log('error', error)
+    // console.log('error', error)
     return res
       .status(500)
       .json({ error: 'There has been an error inserting the link' })
@@ -45,7 +44,6 @@ const insertUrl = async (longUrl: string, userId: UserId) => {
     }
 
     const insertResponse = await urlsCollection.insertOne(newEntry)
-    console.log("dbRes",insertResponse)
     close()
 
     if (insertResponse.acknowledged) {
@@ -54,6 +52,6 @@ const insertUrl = async (longUrl: string, userId: UserId) => {
       return 'an error in the db has ocurred'
     }
   } catch (error) {
-    console.log('insert error', error)
+    // console.log('insert error', error)
   }
 }

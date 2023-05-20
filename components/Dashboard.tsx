@@ -13,7 +13,6 @@ const Dashboard = () => {
       if (res.length > 0) {
         let linkarr = []
         for (let x of res) {
-          console.log('first')
           linkarr.push(<div className='dashboard__link' key={x._id}>
             <h4>{x.longUrl}</h4>
             <h4>http://localhost:3000/{x.shortUrl}</h4>

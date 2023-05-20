@@ -7,7 +7,7 @@ export async function hashPassword(password: string) {
     // should there be error handling here?
     return hash
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return 'error'
   }
 }
@@ -20,7 +20,7 @@ export const verifyPassword = async (hashedPassword: string, password: string) =
       return false
     }
   } catch (error) {
-    console.log('verifyPassword', error)
+    // console.log('verifyPassword', error)
     return 'error'
   }
 }
